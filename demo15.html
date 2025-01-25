@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idea Decoding AI</title>
+    <style>
+        /* Reset base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            color: #00ff00;
+            background-color: #000;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        /* Background with moving hacker style numbers */
+        #matrix-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #020700;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .matrix-content {
+            position: absolute;
+            color: #00ff00;
+            font-size: 20px;
+            opacity: 0.5;
+            white-space: nowrap;
+            animation: matrixAnimation 4s linear infinite;
+            animation-delay: calc(-1s * var(--delay)); /* Dynamic delay for each line */
+        }
+
+        @keyframes matrixAnimation {
+            0% {
+                top: -100%;
+                left: 0;
+            }
+            25% {
+                top: 0;
+                left: 20%;
+            }
+            50% {
+                top: 0;
+                left: 40%;
+            }
+            75% {
+                top: 0;
+                left: 60%;
+            }
+            100% {
+                top: 100%;
+                left: 80%;
+            }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 1;
+            padding: 50px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            color: #00ff00;
+            animation: blink 0.8s infinite alternate;
+        }
+
+        header h2 {
+            font-size: 1.5em;
+            color: #00ff00;
+            margin-bottom: 30px;
+        }
+
+        /* Idea form */
+        .idea-form {
+            margin: 20px auto;
+            width: 50%;
+            text-align: center;
+        }
+
+        textarea {
+            width: 80%;
+            height: 150px;
+            background-color: #000000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px;
+            font-size: 1.2em;
+            resize: none;
+        }
+
+        button {
+            background-color: #00ff00;
+            color: #000;
+            font-size: 1.2em;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #00cc00;
+        }
+
+        /* Results Section */
+        .results {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        #result-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .result-box {
+            width: 200px;
+            height: 150px;
+            background-color: #003300;
+            border: 2px solid #00ff00;
+            margin: 10px;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #00ff00;
+            text-align: center;
+        }
+
+        .result-box-large {
+            width: 450px;
+            height: 200px;
+            background-color: #003300;
+            border: 2px solid #00ff00;
+            margin: 10px auto;
+            padding: 20px;
+            font-size: 1.5em;
+            color: #00ff00;
+            text-align: center;
+        }
+
+        /* Loading animation */
+        #loading {
+            display: none;
+            margin-top: 20px;
+            font-size: 2em;
+            color: #00ff00;
+        }
+
+        /* Roadmap Section */
+        .roadmap {
+            margin-top: 100px;
+            color: #00ff00;
+           font-size: larger;
+            text-align: center;
+        }
+
+        .roadmap-line {
+            display: flex;
+            justify-content: space-evenly;
+            position: relative;
+        }
+
+        .roadmap-line:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #00ff00;
+            z-index: -1;
+        }
+        .roadmap-box {
+            background-color: #003300;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            font-size: 1.2em;
+            color: #00ff00;
+            width: 200px;
+            height: 100px;
+            text-align: center;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+
+        .roadmap-box:hover {
+            background-color: #00cc00;
+            color: #000;
+            cursor: pointer;
+        }
+
+        /* Links section */
+        .links {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .links a {
+            color: #00ff00;
+            font-size: 1.2em;
+            margin: 10px;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            color: #00cc00;
+        }
+
+        /* Animation for blinking text */
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Background with moving hacker style numbers -->
+    <div id="matrix-background">
+        <div class="matrix-content" style="--delay: 1;">1234567890ABCDEF</div>
+        <div class="matrix-content" style="--delay: 2;">XYZLMNOPQRS</div>
+        <div class="matrix-content" style="--delay: 3;">!@#$%^&*()_+</div>
+        <div class="matrix-content" style="--delay: 4;">LMNOPQRSTUV</div>
+        <div class="matrix-content" style="--delay: 5;">&*^%$#@!$^%$@</div>
+        <div class="matrix-content" style="--delay: 6;">ABCD1234!@#$</div>
+        <div class="matrix-content" style="--delay: 7;">&$#12ASXZ80</div>
+        <div class="matrix-content" style="--delay: 8;">!!ABXXGG33TT</div>
+        <div class="matrix-content" style="--delay: 9;">>>123>>>AAABBB</div>
+        <div class="matrix-content" style="--delay: 10;">WHYUHERE</div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>AIMUSK.</h1>
+            <h2>Unlock the Hidden Potential of Your Project</h2>
+        </header>
+
+        <!-- Idea submission form -->
+        <div class="idea-form">
+            <textarea id="user-idea" placeholder="Describe your idea..." rows="5"></textarea>
+            <button id="evaluate-btn">Evaluate Your Idea</button>
+        </div>
+
+        <!-- Loading spinner -->
+        <div id="loading">⏳ Evaluating...</div>
+
+        <!-- Results Section -->
+        <div class="results" id="results">
+            <h3>Evaluation Results:</h3>
+            <div id="result-container">
+                <!-- Results will appear here after analysis -->
+            </div>
+        </div>
+
+        <!-- Roadmap Section -->
+        <section class="roadmap">
+            <h3>ROADMAP</h3>
+            <section>
+
+            </section>
+            <div class="roadmap-line">
+                <div class="roadmap-box">Phase 1 - Coin launch</div>
+                <div class="roadmap-box">Phase 2 - Community development</div>
+                <div class="roadmap-box">Phase 3 - Public rankings</div>
+                <div class="roadmap-box">Phase 4 - AI Dev</div>
+                <div class="roadmap-box">Phase 5 - Optimization</div>
+            </div>
+        </section>
+
+        <!-- Links Section -->
+        <div class="links">
+            <a href="https://dexscreener.com" target="_blank">Pump.fun</a>
+            <a href="https://x.com/aimuskinc" target="_blank">X</a>
+            <a href="https://solana.com" target="_blank">Contract Address</a>
+        </div>
+    </div>
+
+    <script>
+        // Simple function to simulate AI evaluation of the idea
+        function evaluateIdea(idea) {
+            // Using a hash function to generate stable results based on the input
+            const hash = Array.from(idea).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            const creativity = (hash % 100);
+            const feasibility = (hash % 50 + 50);
+            const success = (hash % 80 + 20);
+            const uniqueness = (hash % 30 + 70);
+
+            return {
+                creativity,
+                feasibility,
+                success,
+                uniqueness,
+                overall: (creativity + feasibility + success + uniqueness) / 4
+            };
+        }
+
+        // Event listener for evaluating the idea
+        document.getElementById('evaluate-btn').addEventListener('click', function() {
+            const idea = document.getElementById('user-idea').value;
+
+            if (idea.trim() === "") {
+                alert("Please enter a description of your idea.");
+                return;
+            }
+
+            // Show loading spinner
+            document.getElementById('loading').style.display = "block";
+
+            // Simulate a 2-second delay before showing results
+            setTimeout(function() {
+                const evaluation = evaluateIdea(idea);
+
+                // Hide loading spinner and show results
+                document.getElementById('loading').style.display = "none";
+                document.getElementById('result-container').innerHTML = `
+                    <div class="result-box">Creativity: ${evaluation.creativity.toFixed(2)}%</div>
+                    <div class="result-box">Feasibility: ${evaluation.feasibility.toFixed(2)}%</div>
+                    <div class="result-box">Success Potential: ${evaluation.success.toFixed(2)}%</div>
+                    <div class="result-box">Uniqueness: ${evaluation.uniqueness.toFixed(2)}%</div>
+                    <div class="result-box-large">
+                        Overall Evaluation: ${evaluation.overall.toFixed(2)}%
+                    </div>
+                `;
+            }, 2000); // Delay for 1 seconds
+        });
+    </script>
+</body>
+</html>
+<!-- Footer -->
+<footer>
+    <p>All Rights Reserved 2025 AI Musk</p>
+</footer>
+</body>
+</html>
